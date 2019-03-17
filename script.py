@@ -14,21 +14,13 @@ def onedataset(data_column,data_values):
     two_temp = data_values.str.split(":",-1,expand=True)
     # We extract all unique values
     u_values = two_temp[0].unique()
-    print(u_values)
-    print(type(u_values))
-    print(type(data_column))
     # We create the column names
     n_values = data_column+"_"+ u_values
-    print(n_values)
     # We create a temporary dataframe with the name of columns
     empty = pd.DataFrame(columns = n_values)
     for i in range(len(u_values)):    
-        print(u_values[i])
         # We find all the values containing the name of the u_values
         df2 = two_temp[0].str.contains(u_values[i],na=False)
-        print(df2.head())
-        print(df2.value_counts())
-        print("-------BREAK-------")
         # We store the values into the empty DF
         empty[n_values[i]] = two_temp[1][df2]
     return empty
@@ -36,17 +28,21 @@ def onedataset(data_column,data_values):
 def more2datasets(d_column,d_values):
     three_temp = d_values.str.split("|",-1,expand=True)
     df_empty = pd.DataFrame()
+    print(df_empty)
     print("more2datasets")
     print(three_temp.head())
     print(d_column)
-    for column, values in three_temp.iteritems():
-        a = onedataset(d_column,values)
-        print(a.head())
-        break
-        if df_empty.empty:
-            df_empty = a
-        else:
-            df_empty = pd.concat([df_empty,a])
+    list_column = list(three_temp)
+    #for i in range(len(three_temp.column))
+    for i in range(len(list_column)):
+        for column, values in three_temp.iteritems():
+            two_temp = values.str.split(":",-1,expand=True)
+            print(two_temp.head())
+            print("column")
+            print(column)
+            print("values")
+            print(values)
+            break
     print("-------BREAK-------")
     print(df_empty.head())
     return df_empty
@@ -55,7 +51,7 @@ def more2datasets(d_column,d_values):
   
 def main():
     #loading the dataframe
-    temp = pd.read_csv('./dateset./All.mitab.01-22-2018.txt', sep = "\t")
+    temp = pd.read_csv('./dataset/All.mitab.01-22-2018.txt', sep = "\t")
     #new dataframe
     final = pd.DataFrame()
     for column, values in temp.iteritems():
@@ -72,9 +68,6 @@ def main():
         elif col_num <= 2:
             # Searching that the dataset have one entry dataset : dataset_code
             final = onedataset(column,values)
-            print(final.head())
-            print(column)
-            print(values[0])
             print("two columns")
         else:
             # If there are not internal dataset inside the column
